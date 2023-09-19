@@ -214,8 +214,8 @@ exports.removeMemberFromCommunity=(adminId,membershipId)=>{
                           _id:0,
                           id:1,
                           community:1,
-                          user:'sameCom.user',
-                          scope:'roleInfo.name'
+                          RemoverUser:'$sameCom.user',
+                          scope:'$roleInfo.name'
                         }
                     }
                 ])
@@ -227,11 +227,21 @@ exports.removeMemberFromCommunity=(adminId,membershipId)=>{
         })
         .then(authorized=>{
             console.log(authorized)
-            resolve('q')
+            if(authorized[0].scope==='Community Admin' || authorized[0].scope==='Community Moderator'){
+                return member.deleteOne({id:membershipId})
+            }
+            throw {
+                message:'You can not perform this action',
+                code:'NOT_ALLOWED_ACCESS'
+            }
+        })
+        .then(result=>{
+            console.log(result)
+            resolve(true)
         })
         .catch(err=>{
             console.log(err)
-            reject('n')
+            reject(err)
         })
     })
 }

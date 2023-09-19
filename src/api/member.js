@@ -35,7 +35,10 @@ exports.removeMember=(req,res)=>{
             })
         })
         .catch(err=>{
-            res.status(400).send({status:false})
+            res.status(400).send({
+                status:false,
+                errors:[err]
+            })
         })
     }
     
