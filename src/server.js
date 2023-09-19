@@ -1,4 +1,5 @@
 const express=require('express')
+const cookieParser=require('cookie-parser')
 
 const { router } = require('./api/api')
 const { notFoundHandler } = require('./utils/utils')
@@ -9,6 +10,7 @@ const port=process.env.PORT || 9099
 
 app.use(express.json())
 app.use(express.urlencoded())
+app.use(cookieParser())
 
 app.use((error, req, res, next) => {
     

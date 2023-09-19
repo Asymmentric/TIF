@@ -1,3 +1,4 @@
+const { decryptData } = require("../utils/encryptions")
 const { verifyToken } = require("../utils/jwt")
 const jwt=require('jsonwebtoken')
 const dotenv=require('dotenv').config()
@@ -6,7 +7,10 @@ const privateKey=process.env.JWT_SECRET
 
 exports.authVerifyToken = async (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(' ')[1]
+        
+        // const token = req.headers.authorization.split(' ')[1]
+        const {auth_token}=req.cookies
+        const token=decryptData(auth_token)
         if (!token) throw {message:"You need to sign in to proceed.",code:"NOT_SIGNEDIN"}
         let data=jwt.verify(token,privateKey)
         
